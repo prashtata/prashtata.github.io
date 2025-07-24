@@ -2,7 +2,7 @@
   "name": "my-portfolio-site",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://prashtata.github.io/Home",
+  "homepage": "https://prashtata.github.io",
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
