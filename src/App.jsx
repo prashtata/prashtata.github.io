@@ -18,9 +18,7 @@ export default function App() {
             <Link to="/" className="hover:underline">Home</Link>
             <Link to="/about" className="hover:underline">About</Link>
             <Link to="/skills" className="hover:underline">Skills</Link>
-            <Link to="/projects" className="hover:underline">Projects</Link>
-            <Link to="/portfolio" className="hover:underline">Portfolio</Link>
-            <Link to="/contact" className="hover:underline">Contact</Link>
+            <Link to="/projects" className="hover:underline">Projects</Link> 
           </div>
         </nav>
         <main className="p-4">
@@ -29,9 +27,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/skills" element={<Skills />} />
             <Route path="/projects" element={<Projects />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
+					</Routes>
         </main>
       </div>
     </Router>
