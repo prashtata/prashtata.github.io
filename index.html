@@ -795,4 +795,180 @@
                 nav.style.boxShadow = '0 2px 20px rgba(120, 119, 198, 0.2)';
             } else {
                 nav.style.background = 'rgba(10, 10, 10, 0.95)';
-                nav.style.
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Enhanced interactive elements
+        document.querySelectorAll('.skill-card, .project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+                this.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Dynamic typing effect for hero section
+        const roles = ['AI/ML Researcher', 'Computer Vision Expert', 'Medical AI Specialist', 'Deep Learning Engineer'];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const heroSubtitle = document.querySelector('.hero .subtitle');
+
+        function typeRole() {
+            const currentRole = roles[roleIndex];
+            
+            if (isDeleting) {
+                heroSubtitle.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                heroSubtitle.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+            }
+
+            setTimeout(typeRole, isDeleting ? 100 : 200);
+        }
+
+        // Start typing effect after page load
+        setTimeout(typeRole, 3000);
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero::before');
+            const hero = document.querySelector('.hero');
+            
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Add glitch effect to name on hover
+        const heroTitle = document.querySelector('.hero h1');
+        if (heroTitle) {
+            heroTitle.addEventListener('mouseenter', function() {
+                this.style.animation = 'none';
+                this.style.textShadow = `
+                    0 0 5px #ff77c6,
+                    0 0 10px #ff77c6,
+                    0 0 15px #ff77c6,
+                    0 0 20px #7877c6,
+                    0 0 35px #7877c6,
+                    0 0 40px #77c6ff
+                `;
+                setTimeout(() => {
+                    this.style.textShadow = '0 0 30px rgba(120, 119, 198, 0.3)';
+                }, 200);
+            });
+        }
+
+        // Add particle effect to profile image
+        const profileImg = document.querySelector('.profile-img');
+        if (profileImg) {
+            profileImg.addEventListener('click', function() {
+                // Create particle burst effect
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.style.position = 'absolute';
+                    particle.style.width = '4px';
+                    particle.style.height = '4px';
+                    particle.style.background = ['#7877c6', '#ff77c6', '#77c6ff'][Math.floor(Math.random() * 3)];
+                    particle.style.borderRadius = '50%';
+                    particle.style.pointerEvents = 'none';
+                    particle.style.zIndex = '1000';
+                    
+                    const rect = this.getBoundingClientRect();
+                    particle.style.left = (rect.left + rect.width / 2) + 'px';
+                    particle.style.top = (rect.top + rect.height / 2) + 'px';
+                    
+                    document.body.appendChild(particle);
+                    
+                    const angle = (Math.PI * 2 * i) / 20;
+                    const velocity = 100 + Math.random() * 100;
+                    
+                    particle.animate([
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { 
+                            transform: `translate(${Math.cos(angle) * velocity}px, ${Math.sin(angle) * velocity}px) scale(0)`, 
+                            opacity: 0 
+                        }
+                    ], {
+                        duration: 1000,
+                        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                    }).onfinish = () => particle.remove();
+                }
+            });
+        }
+
+        // Intersection Observer for counting animation
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const finalText = target.textContent;
+                    target.textContent = '0';
+                    
+                    // Animate counting for numeric values
+                    if (finalText.includes('.')) {
+                        // Handle decimal numbers like 0.987
+                        const finalNum = parseFloat(finalText);
+                        let current = 0;
+                        const increment = finalNum / 50;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= finalNum) {
+                                target.textContent = finalText;
+                                clearInterval(timer);
+                            } else {
+                                target.textContent = current.toFixed(3);
+                            }
+                        }, 30);
+                    } else if (finalText.includes('x')) {
+                        // Handle multiplier values like 50x
+                        const finalNum = parseInt(finalText);
+                        let current = 0;
+                        const increment = finalNum / 30;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= finalNum) {
+                                target.textContent = finalText;
+                                clearInterval(timer);
+                            } else {
+                                target.textContent = Math.floor(current) + 'x';
+                            }
+                        }, 50);
+                    } else if (finalText.includes('+')) {
+                        // Handle values like 3+ or 200+
+                        const finalNum = parseInt(finalText);
+                        let current = 0;
+                        const increment = finalNum / 40;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= finalNum) {
+                                target.textContent = finalText;
+                                clearInterval(timer);
+                            } else {
+                                target.textContent = Math.floor(current) + '+';
+                            }
+                        }, 40);
+                    }
+                    statsObserver.unobserve(target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(stat => statsObserver.observe(stat));
+    </script>
+</body>
+</html>
