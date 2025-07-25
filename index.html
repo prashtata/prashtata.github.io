@@ -856,6 +856,9 @@
         // Add glitch effect to name on hover
         const heroTitle = document.querySelector('.hero h1');
         if (heroTitle) {
+            // Store the original animation value
+            const originalAnimation = window.getComputedStyle(heroTitle).animation;
+            
             heroTitle.addEventListener('mouseenter', function() {
                 this.style.animation = 'none';
                 this.style.textShadow = `
@@ -868,7 +871,8 @@
                 `;
                 setTimeout(() => {
                     this.style.textShadow = '0 0 30px rgba(120, 119, 198, 0.3)';
-                }, 20);
+                    this.style.animation = originalAnimation; // Restore original animation
+                }, 200);
             });
         }
 
